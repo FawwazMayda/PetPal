@@ -43,6 +43,7 @@ class MainViewController: UIViewController {
 	private var selected:IndexPath!
 	private var picker = UIImagePickerController()
 	private var images = [String:UIImage]()
+    private var query = ""
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -84,9 +85,8 @@ class MainViewController: UIViewController {
         friend.dob = data.dob
         friend.eyeColor = data.eyeColor
         appDelegate.saveContext()
-		friends.append(friend)
-		let index = IndexPath(row:friends.count - 1, section:0)
-		collectionView?.insertItems(at: [index])
+		refresh()
+        collectionView.reloadData()
 	}
 	
 	// MARK:- Private Methods
@@ -97,8 +97,15 @@ class MainViewController: UIViewController {
 	}
     
     private func refresh() {
+        let request = Friend.fetchRequest() as NSFetchRequest<Friend>
+        if !query.isEmpty {
+            let predicate = NSPredicate(format: "name CONTAINS[cd] %@", query)
+            request.predicate = predicate
+        }
+        let sort = NSSortDescriptor(key: #keyPath(Friend.name), ascending: true, selector: #selector(NSString.caseInsensitiveCompare(_:)))
+        request.sortDescriptors = [sort]
         do{
-            friends = try context.fetch(Friend.fetchRequest())
+            friends = try context.fetch(request)
         } catch {
             let error = error as NSError
             print("Couldnt fetch \(error), \(error.userInfo)")
@@ -143,17 +150,11 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 // Search Bar Delegate
 extension MainViewController:UISearchBarDelegate {
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-		guard let query = searchBar.text else {
+		guard let txt = searchBar.text else {
 			return
 		}
-        let request = Friend.fetchRequest() as NSFetchRequest<Friend>
-        request.predicate = NSPredicate(format: "name CONTAINS[cd] %@", query)
-        do {
-            friends = try context.fetch(request)
-        } catch{
-            let error = error as NSError
-            print("Error fetching \(error), \(error.userInfo)")
-        }
+        query = txt
+        refresh()
 		searchBar.resignFirstResponder()
 		collectionView.reloadData()
 	}
