@@ -29,6 +29,7 @@
 */
 
 import UIKit
+import CoreData
 
 class MainViewController: UIViewController {
 	@IBOutlet private weak var collectionView:UICollectionView!
@@ -50,12 +51,8 @@ class MainViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        do{
-            friends = try context.fetch(Friend.fetchRequest())
-        } catch {
-            let error = error as NSError
-            print("Couldnt fetch \(error), \(error.userInfo)")
-        }
+        refresh()
+        showEditButton()
     }
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
@@ -85,6 +82,7 @@ class MainViewController: UIViewController {
         friend.name = data.name
         friend.address = data.address
         friend.dob = data.dob
+        friend.eyeColor = data.eyeColor
         appDelegate.saveContext()
 		friends.append(friend)
 		let index = IndexPath(row:friends.count - 1, section:0)
@@ -97,6 +95,16 @@ class MainViewController: UIViewController {
 			navigationItem.leftBarButtonItem = editButtonItem
 		}
 	}
+    
+    private func refresh() {
+        do{
+            friends = try context.fetch(Friend.fetchRequest())
+        } catch {
+            let error = error as NSError
+            print("Couldnt fetch \(error), \(error.userInfo)")
+        }
+
+    }
 }
 
 // Collection View Delegates
@@ -111,9 +119,14 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 		let friend = isFiltered ? filtered[indexPath.row] : friends[indexPath.row]
         cell.nameLabel.text = friend.name!
         cell.addressLabel.text = friend.address!
-        if let image = images[friend.name!] {
-			cell.pictureImageView.image = image
-		}
+        cell.ageLabel.text = "Age: \(friend.age)"
+        cell.eyeColorView.backgroundColor = friend.eyeColor as? UIColor
+        
+        if let data = friend.photo as Data? {
+			cell.pictureImageView.image = UIImage(data: data)
+        } else {
+            cell.pictureImageView.image = UIImage(named: "person-placeholder")
+        }
 		return cell
 	}
 	
@@ -133,17 +146,20 @@ extension MainViewController:UISearchBarDelegate {
 		guard let query = searchBar.text else {
 			return
 		}
-		isFiltered = true
-		filtered = friends.filter({(friend) -> Bool in
-            return friend.name!.contains(query)
-		})
+        let request = Friend.fetchRequest() as NSFetchRequest<Friend>
+        request.predicate = NSPredicate(format: "name CONTAINS %@", query)
+        do {
+            friends = try context.fetch(request)
+        } catch{
+            let error = error as NSError
+            print("Error fetching \(error), \(error.userInfo)")
+        }
 		searchBar.resignFirstResponder()
 		collectionView.reloadData()
 	}
 	
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-		isFiltered = false
-		filtered.removeAll()
+		refresh()
 		searchBar.text = nil
 		searchBar.resignFirstResponder()
 		collectionView.reloadData()
@@ -158,6 +174,8 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
 
 		let image = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as! UIImage
 		let friend = isFiltered ? filtered[selected.row] : friends[selected.row]
+        friend.photo = image.pngData() as Data?
+        appDelegate.saveContext()
         images[friend.name!] = image
 		collectionView?.reloadItems(at: [selected])
 		picker.dismiss(animated: true, completion: nil)

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4D39594824816BEE0015E912 /* Friend+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D39594724816BEE0015E912 /* Friend+CoreDataProperties.swift */; };
+		4D39594A24816E530015E912 /* Friend+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D39594924816E530015E912 /* Friend+CoreDataProperties.swift */; };
 		4D3F04FB24815F0F000E58B2 /* PetPal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4D3F04F924815F0F000E58B2 /* PetPal.xcdatamodeld */; };
 		4D3F04FE24815FBD000E58B2 /* Friend+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3F04FC24815FBC000E58B2 /* Friend+CoreDataClass.swift */; };
 		DD6B333C1F56DAD800F4C248 /* PetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6B333B1F56DAD800F4C248 /* PetsViewController.swift */; };
@@ -26,7 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4D39594724816BEE0015E912 /* Friend+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Friend+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4D39594924816E530015E912 /* Friend+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Friend+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4D3F04FA24815F0F000E58B2 /* PetPal.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PetPal.xcdatamodel; sourceTree = "<group>"; };
 		4D3F04FC24815FBC000E58B2 /* Friend+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Friend+CoreDataClass.swift"; sourceTree = "<group>"; };
 		DD6B333B1F56DAD800F4C248 /* PetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetsViewController.swift; sourceTree = "<group>"; };
@@ -121,7 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				4D3F04FC24815FBC000E58B2 /* Friend+CoreDataClass.swift */,
-				4D39594724816BEE0015E912 /* Friend+CoreDataProperties.swift */,
+				4D39594924816E530015E912 /* Friend+CoreDataProperties.swift */,
 				DD6B333F1F56E05F00F4C248 /* FriendData.swift */,
 				DD6B33411F56E1A900F4C248 /* PetData.swift */,
 			);
@@ -215,7 +215,7 @@
 				DD952D671F56D8AA00AF81B8 /* MainViewController.swift in Sources */,
 				DD6B33441F56EC2400F4C248 /* FriendCell.swift in Sources */,
 				DD6B333C1F56DAD800F4C248 /* PetsViewController.swift in Sources */,
-				4D39594824816BEE0015E912 /* Friend+CoreDataProperties.swift in Sources */,
+				4D39594A24816E530015E912 /* Friend+CoreDataProperties.swift in Sources */,
 				DD719FFB1F578F96008392C8 /* Array+Extensions.swift in Sources */,
 				DD952D651F56D8AA00AF81B8 /* AppDelegate.swift in Sources */,
 				DDB438961F579FDB0078BBAD /* Int+Extension.swift in Sources */,
