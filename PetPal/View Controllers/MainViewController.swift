@@ -147,7 +147,7 @@ extension MainViewController:UISearchBarDelegate {
 			return
 		}
         let request = Friend.fetchRequest() as NSFetchRequest<Friend>
-        request.predicate = NSPredicate(format: "name CONTAINS %@", query)
+        request.predicate = NSPredicate(format: "name CONTAINS[cd] %@", query)
         do {
             friends = try context.fetch(request)
         } catch{
